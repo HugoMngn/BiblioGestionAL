@@ -11,9 +11,7 @@ import com.example.BiblioGestionAL.entity.User;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByUser(User user);
     List<Loan> findByApprovedFalse();
-
-    List<Loan> findByReturnedTrue();
-
-    List<Loan> findByReturnedFalse();
     List<Loan> findByDueDateBefore(LocalDate date);
+    List<Loan> findByReturnDateIsNull();
+    List<Loan> findByReturnDateIsNotNull();
 }

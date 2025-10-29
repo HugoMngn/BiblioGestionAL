@@ -17,7 +17,7 @@ public class Loan {
 
     @ManyToOne(optional = false)
     private Book book;
-
+    private String username;
     private LocalDate loanDate;
     private LocalDate dueDate;
     private LocalDate returnDate;

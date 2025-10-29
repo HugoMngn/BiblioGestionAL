@@ -32,6 +32,7 @@ public class AuthDTOs {
     public static class LoginResponse {
         private String username;
         private String message;
+        private String role;
     }
 
     @Data

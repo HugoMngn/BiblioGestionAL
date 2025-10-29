@@ -27,20 +27,21 @@ public class AuthController {
 
     /// Login
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthDTOs.LoginRequest req) {
-        return userService.findByUsername(req.getUsername())
-                .map(u -> {
-                    if (userService.checkPassword(u, req.getPassword())) {
-                        AuthDTOs.LoginResponse resp = AuthDTOs.LoginResponse.builder()
-                                .username(u.getUsername())
-                                .message("Login success")
-                                .build();
-                        return ResponseEntity.ok(resp);
-                    } else {
-                        return ResponseEntity.status(401).body("Invalid credentials");
-                    }
-                }).orElse(ResponseEntity.status(404).body("User not found"));
-    }
+public ResponseEntity<?> login(@RequestBody AuthDTOs.LoginRequest req) {
+    return userService.findByUsername(req.getUsername())
+            .map(u -> {
+                if (userService.checkPassword(u, req.getPassword())) {
+                    AuthDTOs.LoginResponse resp = AuthDTOs.LoginResponse.builder()
+                            .username(u.getUsername())
+                            .message("Login success")
+                            .role(u.getPrimaryRole())
+                            .build();
+                    return ResponseEntity.ok(resp);
+                } else {
+                    return ResponseEntity.status(401).body("Invalid credentials");
+                }
+            }).orElse(ResponseEntity.status(404).body("User not found"));
+}
 
     /// Change password
     @PostMapping("/change-password")
@@ -63,6 +64,7 @@ public class AuthController {
                 .map(u -> ResponseEntity.ok("User found: " + u))
                 .orElse(ResponseEntity.status(404).body("User not found"));
     }
+
 
     /// Create admin user
     @PostMapping("/admin/create")

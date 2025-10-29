@@ -1,7 +1,7 @@
 package com.example.BiblioGestionAL.service;
 
 import java.util.Optional;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,6 @@ public class UserService {
         return userRepository.save(admin);
     }
 
-    // ✅ Ajout de la méthode manquante
     public String encodePassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
@@ -58,4 +57,12 @@ public class UserService {
         user.setPassword(encodePassword(newPassword));
         userRepository.save(user);
     }
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+    
 }

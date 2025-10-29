@@ -28,5 +28,22 @@ public class User {
     @Column(name = "role")
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
+    
+        /**
+     * Retourne le rôle le plus élevé de l'utilisateur
+     * Hiérarchie : ADMIN > LIBRARIAN > MEMBER
+     */
+    public String getPrimaryRole() {
+        if (roles.contains(Role.ROLE_ADMIN)) {
+            return "ROLE_ADMIN";
+        }
+        if (roles.contains(Role.ROLE_LIBRARIAN)) {
+            return "ROLE_LIBRARIAN";
+        }
+        if (roles.contains(Role.ROLE_MEMBER)) {
+            return "ROLE_MEMBER";
+        }
+        return "ROLE_MEMBER"; // par défaut
+    }
 }
 
