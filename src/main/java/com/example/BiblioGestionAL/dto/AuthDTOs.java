@@ -52,4 +52,14 @@ public class AuthDTOs {
         private String oldPassword;
         private String newPassword;
     }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChangePasswordRequest {
+        private String username;
+        private String oldPassword;
+        private String newPassword;
+    }
 }

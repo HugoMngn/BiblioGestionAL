@@ -83,4 +83,13 @@ public class LibraryFacadeProxy implements LibraryFacade {
     public List<com.example.BiblioGestionAL.entity.Loan> getUserLoans(String username) {
         return real.getUserLoans(username);
     }
+
+    @Override
+    public List<com.example.BiblioGestionAL.entity.Loan> getPendingLoans(String username) {
+        User u = requireUser(username);
+        if (!hasRole(u, Role.ROLE_LIBRARIAN) && !hasRole(u, Role.ROLE_ADMIN)) {
+            throw new SecurityException("Only librarians or admins can view pending loans");
+        }
+        return real.getPendingLoans(username);
+    }
 }

@@ -22,4 +22,5 @@ public interface LibraryFacade {
     Loan returnBook(Long loanId, String username);
 
     List<Loan> getUserLoans(String username);
+    List<Loan> getPendingLoans(String username);
 }

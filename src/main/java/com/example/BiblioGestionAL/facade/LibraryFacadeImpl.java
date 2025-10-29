@@ -2,6 +2,7 @@ package com.example.BiblioGestionAL.facade;
 
 import com.example.BiblioGestionAL.entity.Book;
 import com.example.BiblioGestionAL.entity.Loan;
+import com.example.BiblioGestionAL.entity.Role;
 import com.example.BiblioGestionAL.entity.User;
 import com.example.BiblioGestionAL.repository.BookRepository;
 import com.example.BiblioGestionAL.service.BookService;
@@ -70,5 +71,14 @@ public class LibraryFacadeImpl implements LibraryFacade {
     public List<Loan> getUserLoans(String username) {
         User u = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
         return loanService.getUserLoans(u);
+    }
+
+    @Override
+    public List<Loan> getPendingLoans(String username) {
+        User u = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!u.getRoles().contains(Role.ROLE_LIBRARIAN) && !u.getRoles().contains(Role.ROLE_ADMIN)) {
+            throw new SecurityException("Only librarians or admins can view pending loans");
+        }
+        return loanService.getPendingLoans();
     }
 }

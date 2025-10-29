@@ -66,5 +66,22 @@ public class LoanService {
 
     public List<Loan> getUserLoans(User user) { return repo.findByUser(user); }
 
-    public List<Loan> getPendingLoans() { return repo.findByApprovedFalse(); }
+    public List<Loan> getPendingLoans() {
+        return repo.findByApprovedFalse();
+    }
+    
+    public List<Loan> findOverdueLoans() {
+        LocalDate today = LocalDate.now();
+        return repo.findByDueDateBefore(today);
+    }
+
+    public List<Loan> findActiveLoans() {
+        return repo.findByReturnedFalse();
+    }
+
+    public List<Loan> findCompletedLoans() {
+        return repo.findByReturnedTrue();
+    }
+    
+
 }

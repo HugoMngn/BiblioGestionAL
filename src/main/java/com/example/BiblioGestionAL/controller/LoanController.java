@@ -53,4 +53,15 @@ public class LoanController {
     public ResponseEntity<?> myLoans(@RequestParam String username) {
         return ResponseEntity.ok(facade.getUserLoans(username));
     }
+
+    @GetMapping("/pending")
+    public ResponseEntity<?> pendingLoans(@RequestParam String username) {
+        try {
+            return ResponseEntity.ok(facade.getPendingLoans(username));
+        } catch (SecurityException se) {
+            return ResponseEntity.status(403).body(se.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

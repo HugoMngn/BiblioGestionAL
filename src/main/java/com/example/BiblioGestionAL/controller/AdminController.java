@@ -17,7 +17,8 @@ public class AdminController {
     public AdminController(UserService userService) { this.userService = userService; }
 
     @PostMapping("/create-librarian")
-    public ResponseEntity<?> createLibrarian(@RequestParam String username, @RequestParam String password, @RequestParam String fullName) {
+    public ResponseEntity<?> createLibrarian(@RequestParam String username, @RequestParam String password,
+            @RequestParam String fullName) {
         // In a real app, only ADMIN can call this (controller would check)
         User librarian = userService.createAdmin(username, password, fullName); // here createAdmin used for simplicity; adapt to create librarian role
         return ResponseEntity.ok(librarian);
