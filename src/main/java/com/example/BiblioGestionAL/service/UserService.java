@@ -43,10 +43,19 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
-    // Admin creation method
     public User createAdmin(String username, String rawPassword, String fullName) {
         String hashed = passwordEncoder.encode(rawPassword);
         User admin = userFactory.createUser(username, hashed, fullName, Role.ROLE_ADMIN);
         return userRepository.save(admin);
+    }
+
+    // ✅ Ajout de la méthode manquante
+    public String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(encodePassword(newPassword));
+        userRepository.save(user);
     }
 }

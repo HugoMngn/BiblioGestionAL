@@ -25,7 +25,8 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addBook(@RequestBody Book book, @RequestHeader(name = "X-User", required = false) String username) {
+    public ResponseEntity<?> addBook(@RequestBody Book book,
+            @RequestHeader(name = "X-User", required = false) String username) {
         // In real app: check role of username header; here facadeProxy + controller can enforce
         Book saved = facade.addBook(book);
         return ResponseEntity.ok(saved);
@@ -33,16 +34,43 @@ public class BookController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Book>> search(@RequestParam(required = false) String title,
-                                             @RequestParam(required = false) String author,
-                                             @RequestParam(required = false) String genre) {
-        if (title != null) return ResponseEntity.ok(bookService.searchByTitle(title));
-        if (author != null) return ResponseEntity.ok(bookService.searchByAuthor(author));
-        if (genre != null) return ResponseEntity.ok(bookService.searchByGenre(genre));
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String genre) {
+        if (title != null)
+            return ResponseEntity.ok(bookService.searchByTitle(title));
+        if (author != null)
+            return ResponseEntity.ok(bookService.searchByAuthor(author));
+        if (genre != null)
+            return ResponseEntity.ok(bookService.searchByGenre(genre));
         return ResponseEntity.ok(bookService.availableBooks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return bookService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
+        return bookService.findById(id)
+                .map(existing -> {
+                    existing.setTitle(updatedBook.getTitle());
+                    existing.setAuthor(updatedBook.getAuthor());
+                    existing.setGenre(updatedBook.getGenre());
+                    existing.setAvailable(updatedBook.isAvailable());
+                    Book saved = bookService.save(existing);
+                    return ResponseEntity.ok(saved);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+        if (bookService.findById(id).isPresent()) {
+            bookService.delete(id);
+            return ResponseEntity.ok("Book deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

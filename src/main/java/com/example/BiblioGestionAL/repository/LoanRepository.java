@@ -9,5 +9,7 @@ import com.example.BiblioGestionAL.entity.User;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByUser(User user);
+
     List<Loan> findByApprovedFalse();
+
 }

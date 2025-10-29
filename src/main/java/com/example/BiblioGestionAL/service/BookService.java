@@ -23,4 +23,6 @@ public class BookService {
     public List<Book> availableBooks() { return repo.findAvailableBooks(); }
     public Book update(Book b) { return repo.save(b); }
     public void delete(Long id) { repo.deleteById(id); }
+    public Book save(Book book) { return repo.save(book); }
+    public List<Book> findAll() { return repo.findAll(); }
 }
