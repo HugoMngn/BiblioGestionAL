@@ -16,7 +16,10 @@ public class Notification {
     private User recipient;
 
     private String message;
+
+    @Builder.Default
     private boolean readFlag = false;
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 }
 

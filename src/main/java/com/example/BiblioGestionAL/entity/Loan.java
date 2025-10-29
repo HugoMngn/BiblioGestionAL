@@ -22,5 +22,6 @@ public class Loan {
     private LocalDate dueDate;
     private LocalDate returnDate;
 
+    @Builder.Default
     private boolean approved = false;
 }

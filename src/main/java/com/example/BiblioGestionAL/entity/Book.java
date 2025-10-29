@@ -14,7 +14,8 @@ public class Book {
     private String author;
     private String genre;
     private String isbn;
-
+    
+    @Builder.Default
     private boolean available = true;
 
     @Column(length = 2000)

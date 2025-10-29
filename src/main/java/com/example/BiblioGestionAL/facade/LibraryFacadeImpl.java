@@ -4,7 +4,6 @@ import com.example.BiblioGestionAL.entity.Book;
 import com.example.BiblioGestionAL.entity.Loan;
 import com.example.BiblioGestionAL.entity.User;
 import com.example.BiblioGestionAL.repository.BookRepository;
-import com.example.BiblioGestionAL.repository.UserRepository;
 import com.example.BiblioGestionAL.service.BookService;
 import com.example.BiblioGestionAL.service.LoanService;
 import com.example.BiblioGestionAL.service.UserService;
@@ -19,17 +18,14 @@ public class LibraryFacadeImpl implements LibraryFacade {
     private final UserService userService;
     private final BookService bookService;
     private final LoanService loanService;
-    private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
     @Autowired
     public LibraryFacadeImpl(UserService userService, BookService bookService,
-                             LoanService loanService, UserRepository userRepository,
-                             BookRepository bookRepository) {
+                             LoanService loanService, BookRepository bookRepository) {
         this.userService = userService;
         this.bookService = bookService;
         this.loanService = loanService;
-        this.userRepository = userRepository;
         this.bookRepository = bookRepository;
     }
 

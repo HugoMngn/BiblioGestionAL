@@ -76,14 +76,11 @@ public class LibraryFacadeProxy implements LibraryFacade {
 
     @Override
     public com.example.BiblioGestionAL.entity.Loan returnBook(Long loanId, String username) {
-        User user = requireUser(username);
-        // require that user returns their own loan or librarian/admin performs return (in controller logic)
         return real.returnBook(loanId, username);
     }
 
     @Override
     public List<com.example.BiblioGestionAL.entity.Loan> getUserLoans(String username) {
-        User user = requireUser(username);
         return real.getUserLoans(username);
     }
 }
