@@ -1,3 +1,22 @@
+package com.example.BiblioGestionAL.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "book")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Book {
-    
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String author;
+    private String genre;
+    private String isbn;
+
+    private boolean available = true;
+
+    @Column(length = 2000)
+    private String description;
 }

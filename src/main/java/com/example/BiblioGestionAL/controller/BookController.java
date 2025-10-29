@@ -1,0 +1,48 @@
+package com.example.BiblioGestionAL.controller;
+
+import com.example.BiblioGestionAL.entity.Book;
+import com.example.BiblioGestionAL.facade.LibraryFacadeProxy;
+import com.example.BiblioGestionAL.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+/**
+ * Endpoints pour gérer le catalogue
+ */
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final LibraryFacadeProxy facade;
+    private final BookService bookService;
+
+    @Autowired
+    public BookController(LibraryFacadeProxy facade, BookService bookService) {
+        this.facade = facade;
+        this.bookService = bookService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addBook(@RequestBody Book book, @RequestHeader(name = "X-User", required = false) String username) {
+        // In real app: check role of username header; here facadeProxy + controller can enforce
+        Book saved = facade.addBook(book);
+        return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> search(@RequestParam(required = false) String title,
+                                             @RequestParam(required = false) String author,
+                                             @RequestParam(required = false) String genre) {
+        if (title != null) return ResponseEntity.ok(bookService.searchByTitle(title));
+        if (author != null) return ResponseEntity.ok(bookService.searchByAuthor(author));
+        if (genre != null) return ResponseEntity.ok(bookService.searchByGenre(genre));
+        return ResponseEntity.ok(bookService.availableBooks());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return bookService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+}
