@@ -1,6 +1,5 @@
 package com.example.BiblioGestionAL.factory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -8,20 +7,27 @@ import org.springframework.stereotype.Component;
 import com.example.BiblioGestionAL.entity.Role;
 import com.example.BiblioGestionAL.entity.User;
 
-/**
- * Factory Method pattern for creating users with default roles depending on type.
- */
 @Component
 public class UserFactory {
 
-    public User createUser(String username, String password, String fullName, Role role) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
+    public User createMember(String username, String encodedPassword, String fullName) {
+        return createUser(username, encodedPassword, fullName, Role.ROLE_MEMBER);
+    }
+
+    public User createLibrarian(String username, String encodedPassword, String fullName) {
+        return createUser(username, encodedPassword, fullName, Role.ROLE_LIBRARIAN);
+    }
+
+    public User createAdmin(String username, String encodedPassword, String fullName) {
+        return createUser(username, encodedPassword, fullName, Role.ROLE_ADMIN);
+    }
+
+    private User createUser(String username, String encodedPassword, String fullName, Role role) {
         return User.builder()
                 .username(username)
-                .password(password)
+                .password(encodedPassword)
                 .fullName(fullName)
-                .roles(roles)
+                .roles(Set.of(role))
                 .build();
     }
 }

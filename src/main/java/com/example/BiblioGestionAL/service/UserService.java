@@ -6,29 +6,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.BiblioGestionAL.entity.Role;
 import com.example.BiblioGestionAL.entity.User;
 import com.example.BiblioGestionAL.factory.UserFactory;
 import com.example.BiblioGestionAL.repository.UserRepository;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final UserFactory userFactory;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserFactory userFactory) {
+    public UserService(UserRepository userRepository, UserFactory userFactory, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userFactory = userFactory;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerMember(String username, String rawPassword, String fullName) {
-        if (userRepository.findByUsername(username).isPresent())
-            throw new IllegalArgumentException("Username already exists");
-        String hashed = passwordEncoder.encode(rawPassword);
-        User user = userFactory.createUser(username, hashed, fullName, Role.ROLE_MEMBER);
+    // INSCRIPTION MEMBRE
+    public User registerMember(String username, String password, String fullName) {
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà");
+        }
+        User user = userFactory.createMember(username, passwordEncoder.encode(password), fullName);
         return userRepository.save(user);
+    }
+
+    // CRÉATION BIBLIOTHÉCAIRE
+    public User createLibrarian(String username, String password, String fullName) {
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà");
+        }
+        User librarian = userFactory.createLibrarian(username, passwordEncoder.encode(password), fullName);
+        return userRepository.save(librarian);
+    }
+
+    // CRÉATION ADMIN
+    public User createAdmin(String username, String password, String fullName) {
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà");
+        }
+        User admin = userFactory.createAdmin(username, passwordEncoder.encode(password), fullName);
+        return userRepository.save(admin);
     }
 
     public Optional<User> findByUsername(String username) {
@@ -43,10 +63,16 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
-    // Admin creation method
-    public User createAdmin(String username, String rawPassword, String fullName) {
-        String hashed = passwordEncoder.encode(rawPassword);
-        User admin = userFactory.createUser(username, hashed, fullName, Role.ROLE_ADMIN);
-        return userRepository.save(admin);
+    public User updateProfile(String username, String fullName, String newPassword) {
+        User user = findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+
+        if (fullName != null && !fullName.isBlank()) {
+            user.setFullName(fullName);
+        }
+        if (newPassword != null && !newPassword.isBlank()) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+        return userRepository.save(user);
     }
 }
