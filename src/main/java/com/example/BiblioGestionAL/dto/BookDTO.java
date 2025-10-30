@@ -2,6 +2,7 @@ package com.example.BiblioGestionAL.dto;
 
 import lombok.*;
 
+// Book Data Transfer Object
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class BookDTO {
     private Long id;

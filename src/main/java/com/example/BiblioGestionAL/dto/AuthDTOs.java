@@ -3,6 +3,7 @@ package com.example.BiblioGestionAL.dto;
 import lombok.*;
 
 public class AuthDTOs {
+    // Registration DTOs
     @Getter
     @Setter
     @NoArgsConstructor
@@ -14,6 +15,7 @@ public class AuthDTOs {
         private String fullName;
     }
 
+    // Login DTOs
     @Getter
     @Setter
     @NoArgsConstructor
@@ -24,6 +26,7 @@ public class AuthDTOs {
         private String password;
     }
 
+    // Login Response DTO
     @Getter
     @Setter
     @NoArgsConstructor
@@ -35,6 +38,7 @@ public class AuthDTOs {
         private String role;
     }
 
+    // Profile Update DTO
     @Data
     @Builder
     @NoArgsConstructor
@@ -44,6 +48,7 @@ public class AuthDTOs {
         private String fullName;
     }
 
+    // Password Change DTO
     @Data
     @Builder
     @NoArgsConstructor
@@ -54,6 +59,7 @@ public class AuthDTOs {
         private String newPassword;
     }
 
+    // Change Password DTO
     @Data
     @Builder
     @NoArgsConstructor

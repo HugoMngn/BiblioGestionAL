@@ -12,14 +12,13 @@ import com.example.BiblioGestionAL.entity.User;
 import com.example.BiblioGestionAL.repository.NotificationRepository;
 import com.example.BiblioGestionAL.repository.UserRepository;
 
-/**
- * Notifications are not implemented using Observer. Instead, we store notifications and optionally send mails.
- */
+// Service class for managing Notification entities.
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
+    // Constructor with Dependency Injection
     @Autowired
     public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
         this.notificationRepository = notificationRepository;
@@ -47,11 +46,7 @@ public class NotificationService {
         return notificationRepository.findByRecipient(user);
     }
 
-    // Ex: scheduled task to generate reminders for due loans (mocked)
-    // Runs every day at 8am
     @Scheduled(cron = "0 0 8 * * ?")
     public void dailyReminderJob() {
-        // In a real app: query loans nearing due date -> create notifications.
-        // Here we leave it simple due to scope.
     }
 }

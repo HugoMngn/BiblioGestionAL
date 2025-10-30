@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+// Service class for managing Loan entities.
 @Service
 public class LoanService {
 
@@ -76,10 +77,14 @@ public class LoanService {
 
         notificationService.notifyUser(
                 loan.getUser(),
-                "Book '" + loan.getBook().getTitle() + "' returned. Thank you!"
-        );
+                "Book '" + loan.getBook().getTitle() + "' returned. Thank you!");
 
         return loan;
+    }
+    // 🔹 Trouver un emprunt par ID
+    public Loan findById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Loan not found with id: " + id));
     }
 
     // 🔹 Emprunts d’un utilisateur

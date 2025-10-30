@@ -3,6 +3,7 @@ package com.example.BiblioGestionAL.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+// Book Entity
 @Entity
 @Table(name = "book")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -10,6 +11,7 @@ public class Book {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Book details
     private String title;
     private String author;
     private String genre;

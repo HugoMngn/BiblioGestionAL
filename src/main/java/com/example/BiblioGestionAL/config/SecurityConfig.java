@@ -11,16 +11,19 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/* Security Configuration  */
 @Configuration
 public class SecurityConfig {
 
     private final UserRepository userRepository;
 
+    // Constructor
     @Autowired
     public SecurityConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    // UserDetailsService bean
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
@@ -33,11 +36,13 @@ public class SecurityConfig {
                 }).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    // Password encoder bean
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Security filter chain bean
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

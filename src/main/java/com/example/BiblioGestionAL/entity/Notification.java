@@ -12,11 +12,13 @@ public class Notification {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Recipient of the notification
     @ManyToOne
     private User recipient;
 
     private String message;
 
+    // Notification status
     @Builder.Default
     private boolean readFlag = false;
     @Builder.Default

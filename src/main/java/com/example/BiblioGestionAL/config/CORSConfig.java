@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CORSConfig implements WebMvcConfigurer {
 
+    // Configure global CORS settings
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -20,6 +21,7 @@ public class CORSConfig implements WebMvcConfigurer {
                 .exposedHeaders("Authorization");
     }
 
+    // Define a CorsFilter bean
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

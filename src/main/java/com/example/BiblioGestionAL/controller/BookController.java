@@ -18,12 +18,14 @@ public class BookController {
     private final LibraryFacadeProxy facade;
     private final BookService bookService;
 
+    // Constructor
     @Autowired
     public BookController(LibraryFacadeProxy facade, BookService bookService) {
         this.facade = facade;
         this.bookService = bookService;
     }
 
+    // Add a new book
     @PostMapping
     public ResponseEntity<?> addBook(@RequestBody Book book,
             @RequestHeader(name = "X-User", required = false) String username) {
@@ -32,6 +34,7 @@ public class BookController {
         return ResponseEntity.ok(saved);
     }
 
+    // Search books by title, author, or genre
     @GetMapping("/search")
     public ResponseEntity<List<Book>> search(@RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
@@ -45,11 +48,13 @@ public class BookController {
         return ResponseEntity.ok(bookService.availableBooks());
     }
 
+    // Get book by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         return bookService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    // Update book details
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
         return bookService.findById(id)
@@ -64,6 +69,7 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Delete a book
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
         if (bookService.findById(id).isPresent()) {

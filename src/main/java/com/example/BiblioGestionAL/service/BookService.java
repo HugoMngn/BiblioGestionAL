@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.BiblioGestionAL.entity.Book;
 import com.example.BiblioGestionAL.repository.BookRepository;
 
+// Service class for managing Book entities.
 @Service
 public class BookService {
     private final BookRepository repo;
